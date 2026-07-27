@@ -1,0 +1,6 @@
+runpod==1.11.0
+transformers==5.14.1
+matplotlib==3.11.1
+numpy==2.5.1
+pillow==12.3.0
+requests==2.34.2

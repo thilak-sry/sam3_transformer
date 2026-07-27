@@ -1,0 +1,30 @@
+# Virtual Environment
+.env/
+venv/
+env/
+
+# Git
+.git/
+.gitignore
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local test inputs/outputs
+output.jpg
+test_input.json
+scratch/
+
+# Documentation and agent files
+README.md
+readme.md
+walkthrough.md
+implementation_plan.md
+task.md
+.agents/
+
+# Docker files
+.dockerignore
