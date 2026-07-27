@@ -3,3 +3,11 @@
 readme.md
 .env.local
 test_client.py
+
+.test_imports.log
+.test_run.log
+
+
+.test_input.json
+
+.test_video.mp4
