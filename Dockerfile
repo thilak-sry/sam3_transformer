@@ -32,8 +32,5 @@ RUN sed -i '/torch/d' requirements.txt && \
 # Copy project files
 COPY . .
 
-# Fix line endings of start.sh and make it executable
-RUN sed -i 's/\r$//' start.sh && chmod +x start.sh
-
 # Expose nothing (RunPod Serverless handles execution via polling)
-ENTRYPOINT ["/app/start.sh"]
+CMD ["python", "-u", "handler.py"]

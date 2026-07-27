@@ -48,4 +48,21 @@ def handler(event):
 
 # Start the Serverless function when the script is run
 if __name__ == '__main__':
+    try:
+        import torch
+        import sys
+        print("==========================================================")
+        print("Initializing SAM3 RunPod Serverless Worker")
+        print("==========================================================")
+        print("--- Python/PyTorch Diagnostic ---")
+        print("Python version:", sys.version.split()[0])
+        print("PyTorch version:", torch.__version__)
+        print("CUDA Available:", torch.cuda.is_available())
+        if torch.cuda.is_available():
+            print("CUDA Device Name:", torch.cuda.get_device_name(0))
+            print("CUDA Device Count:", torch.cuda.device_count())
+        print("==========================================================")
+    except Exception as e:
+        print(f"Diagnostic failed: {e}")
+        
     runpod.serverless.start({"handler": handler})
