@@ -1,8 +1,11 @@
 .jpg
+output_segmented.jpg
+output.jpg
+.venv/
 
 readme.md
 .env.local
-test_client.py
+env.local
 
 .test_imports.log
 .test_run.log
