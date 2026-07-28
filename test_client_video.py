@@ -6,8 +6,10 @@ import requests
 # Helper to manually load .env.local file without external dependencies
 def load_env():
     env_path = os.path.join(os.path.dirname(__file__), '.env.local')
+    if not os.path.exists(env_path):
+        env_path = os.path.join(os.path.dirname(__file__), 'env.local')
     if os.path.exists(env_path):
-        print("Loading environment variables from .env.local...")
+        print(f"Loading environment variables from {os.path.basename(env_path)}...")
         with open(env_path, 'r', encoding='utf-8') as f:
             for line in f:
                 trimmed = line.strip()
@@ -32,7 +34,7 @@ def main():
     url = f"https://api.runpod.ai/v2/{RUNPOD_ENDPOINT_ID}/runsync"
 
     # Prepare input payload using the Azure SAS video URL
-    video_url = "https://srystudiostorage.blob.core.windows.net/segment-anything/test_video.mp4?sp=r&st=2026-07-27T17:51:51Z&se=2027-10-27T02:06:51Z&spr=https&sv=2026-02-06&sr=b&sig=LUezGLJzwhDdTjdo0YuBSOi8OMURyUsKReYLigsZ4nE%3D"
+    video_url = "https://srystudiostorage.blob.core.windows.net/segment-anything/266435_medium.mp4?sp=r&st=2026-07-28T09:59:07Z&se=2027-12-01T18:14:07Z&spr=https&sv=2026-02-06&sr=b&sig=0bABg9SakkokUvvOx00tddH0AB4G9g0WYlKDSBU1sig%3D"
     
     headers = {
         "Content-Type": "application/json",
@@ -42,7 +44,7 @@ def main():
     data = {
         "input": {
             "image": video_url,
-            "prompt": "mouth"
+            "prompt": "upper lips"
         }
     }
 

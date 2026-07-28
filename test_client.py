@@ -6,8 +6,10 @@ import requests
 # Helper to manually load .env.local file without external dependencies
 def load_env():
     env_path = os.path.join(os.path.dirname(__file__), '.env.local')
+    if not os.path.exists(env_path):
+        env_path = os.path.join(os.path.dirname(__file__), 'env.local')
     if os.path.exists(env_path):
-        print("Loading environment variables from .env.local...")
+        print(f"Loading environment variables from {os.path.basename(env_path)}...")
         with open(env_path, 'r', encoding='utf-8') as f:
             for line in f:
                 trimmed = line.strip()

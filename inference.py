@@ -31,7 +31,7 @@ image_processor = None
 video_model = None
 video_processor = None
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
+device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 
 def get_image_model_and_processor():
     global image_model, image_processor

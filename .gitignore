@@ -10,7 +10,11 @@ env.local
 .test_imports.log
 .test_run.log
 
+266435_medium.mp4
+output
+Images
 
-.test_input.json
+test_bulk_image.py
+test_input.json
 
 .test_video.mp4

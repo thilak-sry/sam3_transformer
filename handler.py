@@ -86,9 +86,20 @@ def handler(event):
         import os
         from transformers.video_utils import load_video
         
+        is_temp_file = False
         # Determine source type and save to temporary file if base64 or read URL
         if video_input.startswith("http"):
-            video_path = video_input
+            print(f"Downloading video from URL: {video_input}...")
+            video_path = "./temp_input.mp4"
+            response = requests.get(video_input, stream=True)
+            if response.status_code == 200:
+                with open(video_path, "wb") as f:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        f.write(chunk)
+                print("Download completed.")
+                is_temp_file = True
+            else:
+                raise Exception(f"Failed to download video from URL, status code: {response.status_code}")
         elif len(video_input) > 200:
             if "," in video_input:
                 video_input = video_input.split(",", 1)[1]
@@ -96,8 +107,24 @@ def handler(event):
             video_path = "./temp_input.mp4"
             with open(video_path, "wb") as f:
                 f.write(video_data)
+            is_temp_file = True
         else:
             video_path = video_input
+            
+        # Re-mux video with FFmpeg to fix missing/invalid stream metadata (e.g. frames: 0)
+        if is_temp_file:
+            print("Fixing video container metadata using FFmpeg...")
+            temp_fixed_path = "./temp_fixed.mp4"
+            exit_code = os.system(f"ffmpeg -y -i {video_path} -c copy {temp_fixed_path}")
+            if exit_code == 0:
+                try:
+                    os.remove(video_path)
+                except Exception:
+                    pass
+                video_path = temp_fixed_path
+                print("Video metadata fixed.")
+            else:
+                print("Warning: FFmpeg re-muxing failed. Proceeding with raw download.")
             
         print(f"Loading video from {video_path}...")
         video_frames, _ = load_video(video_path)
@@ -117,7 +144,7 @@ def handler(event):
         print(f"Saved segmented video locally to {output_segmented_path}")
         
         # Clean up temporary input file if created
-        if not video_input.startswith("http") and len(video_input) > 200:
+        if is_temp_file:
             try:
                 os.remove(video_path)
             except Exception:
